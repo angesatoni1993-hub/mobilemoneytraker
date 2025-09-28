@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2E8B57">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" id="manifest-link">
+    <script>
+        // Manifest PWA intégré
+        const manifestData = {
+            "name": "Mobile Money Tracker - Bénin",
+            "short_name": "MM Tracker",
+            "description": "Calculateur de bénéfices Mobile Money pour le Bénin",
+            "start_url": "./",
+            "display": "standalone",
+            "background_color": "#2E8B57",
+            "theme_color": "#2E8B57",
+            "orientation": "portrait",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiByeD0iMjQiIGZpbGw9IiMyRThCNTciLz4KPHN2ZyB4PSIyNCIgeT0iMjQiIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNNDAsMTBINjBWMjBINDBWMTBaTTE2LDI2VjIySDEyVjM4SDE2VjM0SDIwVjI2SDE2Wk02MCwyNlYzNEg2NFYzOEg2OFYyMkg2NFYyNkg2MFpNMTYsNTBWNDZIMTJWNjJIMTZWNThIMjBWNTBIMTZaTTQwLDM4VjQySDQ0VjM4SDQwWk00OCwzOFY0Mkg1MlYzOEg0OFpNNTYsMzhWNDJINjBWMzhINTZaTTI0LDQ2VjUwSDI4VjQ2SDI0Wk0zMiw0NlY1MEgzNlY0NkgzMlpNNDAsNDZWNTBINDRWNDZINDBaTTQ4LDQ2VjUwSDUyVjQ2SDQ4Wk01Niw0NlY1MEg2MFY0Nkg1NlpNNjQsNDZWNTBINjhWNDZINjRaTTI0LDU0VjU4SDI4VjU0SDI0Wk00MCw1NFY1OEg0NFY1NEg0MFpNNDgsNTRWNThINTJWNTRINDhaTTU2LDU0VjU4SDYwVjU0SDU2Wk0yNCw2MlY2NkgyOFY2MkgyNFpNMzIsNjJWNjZIMzZWNjJIMzJaTTQwLDYyVjY2SDQ0VjYySDQwWk00OCw2MlY2Nkg1MlY2Mkg0OFpNNTYsNjJWNjZINjBWNjJINTZaTTY0LDYyVjY2SDY4VjYySDY0WiIvPgo8L3N2Zz4KPC9zdmc+",
+                    "sizes": "128x128",
+                    "type": "image/svg+xml"
+                },
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iOTYiIGZpbGw9IiMyRThCNTciLz4KPHN2ZyB4PSI5NiIgeT0iOTYiIHdpZHRoPSIzMjAiIGhlaWdodD0iMzIwIiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xNjAsNDBIMjQwVjgwSDE2MFY0MFpNNjQsMTA0VjY0SDQ4VjE5Mkg2NFYxNzZIODBWMTA0SDY0Wk0yNDAsMTA0VjE3NkgyNTZWMTkySDI3MlY2NEgyNTZWMTA0SDI0MFpNNjQsMjAwVjE4NEg0OFYzMjBINjRWMzA0SDgwVjIwMEg2NFpNMTYwLDE1MlYxODRIMTc2VjE1MkgxNjBaTTE5MiwxNTJWMTg0SDIwOFYxNTJIMTkyWk0yMjQsMTUyVjE4NEgyNDBWMTUySDIyNFpNOTYsMTg0VjIwMEgxMTJWMTg0SDk2Wk0xMjgsMTg0VjIwMEgxNDRWMTg0SDEyOFpNMTYwLDE4NFYyMDBIMTc2VjE4NEgxNjBaTTE5MiwxODRWMjAwSDIwOFYxODRIMTkyWk0yMjQsMTg0VjIwMEgyNDBWMTg0SDIyNFpNMjU2LDE4NFYyMDBIMjcyVjE4NEgyNTZaTTk2LDIxNlYyMzJIMTEyVjIxNkg5NlpNMTYwLDIxNlYyMzJIMTc2VjIxNkgxNjBaTTE5MiwyMTZWMjMySDIwOFYyMTZIMTkyWk0yMjQsMjE2VjIzMkgyNDBWMjE2SDIyNFpNOTYsMjQ4VjI2NEgxMTJWMjQ4SDk2Wk0xMjgsMjQ4VjI2NEgxNDRWMjQ4SDEyOFpNMTYwLDI0OFYyNjRIMTc2VjI0OEgxNjBaTTE5MiwyNDhWMjY0SDIwOFYyNDhIMTkyWk0yMjQsMjQ4VjI2NEgyNDBWMjQ4SDIyNFpNMjU2LDI0OFYyNjRIMjcyVjI0OEgyNTZaIi8+Cjwvc3ZnPgo8L3N2Zz4=",
+                    "sizes": "512x512",
+                    "type": "image/svg+xml"
+                }
+            ]
+        };
+
+        // Créer et injecter le manifest
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest-link').href = manifestURL;
+    </script>
+
+    <title>Mobile Money Tracker - Bénin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #2E8B57 0%, #32CD32 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 100%;
+            min-height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2E8B57, #32CD32);
+            color: white;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .stats-container {
+            padding: 16px;
+            background: #f8f9fa;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid #2E8B57;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2E8B57;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .profit-stat .stat-value {
+            color: #28a745;
+        }
+
+        .input-section {
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #eee;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .input-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: monospace;
+            resize: vertical;
+            transition: all 0.3s;
+            min-height: 120px;
+            line-height: 1.4;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #2E8B57;
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+        }
+
+        .input-group textarea::placeholder {
+            color: #999;
+            font-size: 13px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            background: linear-gradient(45deg, #2E8B57, #32CD32);
+            color: white;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 50px;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #868e96);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #e74c3c);
+        }
+
+        .transactions-section {
+            flex: 1;
+            padding: 16px;
+            background: #f8f9fa;
+            min-height: 300px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: #2E8B57;
+            color: white;
+            border-color: #2E8B57;
+        }
+
+        .transaction-item {
+            background: white;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid #2E8B57;
+            transition: transform 0.2s;
+        }
+
+        .transaction-item:active {
+            transform: scale(0.98);
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .transaction-amount {
+            font-size: 1.3rem;
+            font-weight: bol
